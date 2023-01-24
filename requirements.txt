@@ -6,3 +6,4 @@ streamlit==1.9.2
 streamlit_authenticator==0.1.5
 streamlit_option_menu==0.3.2
 streamlit-aggrid==0.3.3
+lxml==4.7.1
