@@ -190,6 +190,7 @@ def get_analytics_month():
 def main():
     
     
+
     if main_name == 'Sidd':
         grid_opt =  [ 'Member History','Activity','Submissions','Update History','Admin Analytics']
         
@@ -197,6 +198,10 @@ def main():
         grid_opt = [ 'Member History','Activity','Submissions']
     
     with st.sidebar:
+        
+        _ , col_2 = st.columns([.2,1])
+        with col_2:
+                 st.write(f"Logged in as : {main_name}")
         
         choice = option_menu(
             menu_title = 'Navigation',
@@ -209,6 +214,7 @@ def main():
                 "nav-link-selected": {"background-color": "#323130"}
                 
                 } )
+        authenticator.logout("Logout")
 
     if choice == 'Member History':        
         st.subheader('Legal History')
@@ -226,7 +232,7 @@ def main():
                 st.download_button( "Export to CSV",   csv_status,   "ALL_Deals.csv",   "text/csv",   key='download-csv')                                 
         
         
-        chart_data = DF_STATUS[['Date','Member','Status', 'Vote','Period','Bill Title']]\
+        chart_data = DF_STATUS[['Date','Member','Status', 'Vote','Period','Bill Title','Refresh Time']]\
             .sort_values(by=['Date'],ascending=False)
         
         gr = box_grid(chart_data, ch = 2)
@@ -261,31 +267,36 @@ def main():
     
     if choice == 'Update History':
         
-        names = {'G000589':'Lance Gooden'}
+        a , b  = st.columns([1,5])
         
-        st.write('Current members on file: \n', names)                   
+        with a:
         
-        upd = st.button('Run Refresh')
-        
-        if upd:
+            names = {'G000589':'Lance Gooden'}
             
-            with st.spinner():
-                try:                          
-                    
-                    data = pd.DataFrame()                    
-                    for memberID in names:
-                        for page in range(1,5): # Number of Pages to scrape
-                            hldr = pd.read_html(f'https://clerk.house.gov/members/ViewRecentVotes?memberID={memberID}&Page={page}')[0]
-                            hldr['Period'] = pd.to_datetime(hldr['Date']).dt.strftime('%Y%m')
-                            hldr['Date'] = pd.to_datetime(hldr['Date'])        
-                            data = data.append(hldr)
-                            data['Member'] = names[memberID]
-                            data.to_csv('Leg.csv',index=False)
-                            
-                    st.success("Refresh Success!")
-                except:
-                    st.error("Refresh Failed!")
+            st.write('Current members on file: \n', names)                   
+            
+            upd = st.button('Run Refresh')
+            
+            if upd:
                 
+                with st.spinner():
+                    try:                          
+                        
+                        data = pd.DataFrame()                    
+                        for memberID in names:
+                            for page in range(1,5): # Number of Pages to scrape
+                                hldr = pd.read_html(f'https://clerk.house.gov/members/ViewRecentVotes?memberID={memberID}&Page={page}')[0]
+                                hldr['Period'] = pd.to_datetime(hldr['Date']).dt.strftime('%Y%m')
+                                hldr['Date'] = pd.to_datetime(hldr['Date'])        
+                                hldr['Refresh Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")      
+                                data = data.append(hldr)
+                                data['Member'] = names[memberID]
+                                data.to_csv('Leg.csv',index=False)
+                                
+                        st.success("Refresh Success!")
+                    except:
+                        st.error("Refresh Failed!")
+                    
     if choice == 'Admin Analytics':
         
         st.plotly_chart(get_analytics_user())
