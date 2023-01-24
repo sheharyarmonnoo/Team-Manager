@@ -1,10 +1,12 @@
 import streamlit_authenticator as stauth, streamlit as st, plotly.express as px
-import sys,  pandas as pd
+import sys,  pandas as pd, dotenv
 from st_aggrid import GridOptionsBuilder, AgGrid
 from streamlit_option_menu import option_menu
-import datetime
-import regex as re
+import datetime, os
+import regex as re , calendar
 
+
+dotenv.load_dotenv('.env')
 
 sys.tracebacklimit = 0
 
@@ -151,14 +153,27 @@ def get_analytics_month():
     
     x_name = 'Submission_Date'    
     
-    data = messages_df[x_name].value_counts()
+    # data = messages_df[x_name].value_counts()
+
+    messages_df['period'] = pd.to_datetime(messages_df[x_name]).dt.strftime('%Y%m')    
+    messages_df['month'] = pd.DatetimeIndex(messages_df[x_name]).month
+    
+    
+    messages_df['month'] = messages_df['month'].apply(lambda x : calendar.month_name[int(x)])
+    # messages_df['month'] = str(messages_df['month']) + "-" + str(messages_df['year'])
+
+    
+    
+    state_total = messages_df.groupby(['month','period'],as_index=False)[x_name].count().sort_values(by = 'period')
+    
+    
 
     state_total_graph = px.bar(
-    data
+    state_total , x = 'month' , y = x_name
 
     )
 
-    state_total_graph.update_layout(title = "Submissions by Period",
+    state_total_graph.update_layout(title = "Submissions by Month",
         template = GRAPH_TEMPLATE, xaxis_title = '', 
         
         yaxis = dict(
@@ -267,7 +282,7 @@ def main():
     
     if choice == 'Update History':
         
-        a , b  = st.columns([1,5])
+        a , _  = st.columns([1,5])
         
         with a:
         
@@ -316,12 +331,13 @@ DF_STATUS['BillNumber'] = DF_STATUS['BillNumber'].apply(lambda x :  re.sub(r'[^a
 csv_status  = convert_df(DF_STATUS)
 
 messages_df = pd.read_csv('messages.csv')
-users_df = pd.read_csv('users.csv')
 
+users_df = pd.read_csv('users.csv')
 
 USERNAMES = users_df['user_name'].values.tolist()
 NAMES = users_df['user'].values.tolist()
 HASHED_PASSWORDS = stauth.Hasher(users_df['pass_code'].values.tolist()).generate()
+
 # NAMES = [USERS['user'][0] for USERS in users_df]
 # HASHED_PASSWORDS = [USERS['pass_code'][0] for USERS in users_df]
 
