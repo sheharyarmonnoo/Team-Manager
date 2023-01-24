@@ -1,12 +1,11 @@
 import streamlit_authenticator as stauth, streamlit as st, plotly.express as px
-import sys,  pandas as pd, dotenv
+import sys,  pandas as pd
 from st_aggrid import GridOptionsBuilder, AgGrid
 from streamlit_option_menu import option_menu
-import datetime, os
+import datetime
 import regex as re , calendar
 
 
-dotenv.load_dotenv('.env')
 
 sys.tracebacklimit = 0
 
