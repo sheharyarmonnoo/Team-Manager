@@ -102,7 +102,7 @@ def box_grid(x,ch):
       
         
         grid_response = AgGrid( x,      gridOptions=gridOptions,                data_return_mode='AS_INPUT',
-                                        fit_columns_on_grid_load=True,    enable_enterprise_modules=False,        
+                                        fit_columns_on_grid_load=True,    enable_enterprise_modules=False,   update_mode='NO_UPDATE',       
                             height=700,            width='100%')    
         return grid_response              
 
@@ -249,7 +249,7 @@ def main():
         chart_data = DF_STATUS[['Date','Member','Status', 'Vote','Period','Bill Title','Refresh Time']]\
             .sort_values(by=['Date'],ascending=False)
         
-        gr = box_grid(chart_data, ch = 2)
+        gr = box_grid(chart_data, ch = 0)
 
     if choice == 'Activity':     
          
