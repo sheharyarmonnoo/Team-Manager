@@ -243,7 +243,7 @@ def main():
 
             
             with col_2:
-                st.download_button( "Export to CSV",   csv_status,   "ALL_Deals.csv",   "text/csv",   key='download-csv')                                 
+                st.download_button( "Export to CSV",   csv_status,   "Detail.csv",   "text/csv",   key='download-csv')                                 
         
         
         chart_data = DF_STATUS[['Date','Member','Status', 'Vote','Period','Bill Title','Refresh Time']]\
@@ -272,7 +272,7 @@ def main():
 
             
             with col_2:
-                st.download_button( "Export to CSV",   csv_status,   "ALL_Deals.csv",   "text/csv",   key='download-csv')                                 
+                st.download_button( "Export to CSV",   csv_status_messages,   "Detail.csv",   "text/csv",   key='download-csv')                                 
         
         chart_data = messages_df[['Submission_Date','Contact_Date','User','staff_contacted','meetings_attended']]\
             .sort_values(by=['Submission_Date'],ascending=False).rename({'staff_contacted':'Staff Contacted', 'meetings_attended': 'Meetings Attended'},axis = 1)
@@ -329,7 +329,11 @@ DF_STATUS['BillNumber'] = DF_STATUS['BillNumber'].apply(lambda x :  re.sub(r'[^a
 
 csv_status  = convert_df(DF_STATUS)
 
+
 messages_df = pd.read_csv('messages.csv')
+
+csv_status_messages  = convert_df(messages_df)
+
 
 users_df = pd.read_csv('users.csv')
 
