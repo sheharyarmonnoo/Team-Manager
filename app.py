@@ -281,7 +281,7 @@ def main():
     
     if choice == 'Update History':
         
-        a , _  = st.columns([1,5])
+        a , _  = st.columns([1,3])
         
         with a:
         
