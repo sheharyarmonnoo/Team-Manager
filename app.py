@@ -294,7 +294,7 @@ def main():
             if upd:
                 
                 with st.spinner():
-                    try:                          
+                    # try:                          
                         
                         data = pd.DataFrame()                    
                         for memberID in names:
@@ -308,8 +308,8 @@ def main():
                                 data.to_csv('Leg.csv',index=False)
                                 
                         st.success("Refresh Success!")
-                    except:
-                        st.error("Refresh Failed!")
+                    # except:
+                        # st.error("Refresh Failed!")
                     
     if choice == 'Admin Analytics':
         
