@@ -13,7 +13,7 @@ def convert_df(x):
 
 # Create a new thread
 
-st.set_page_config(page_title= 'Legal Manager',page_icon = "",layout="wide")
+st.set_page_config(page_title= 'Team Manager',page_icon = "",layout="wide")
 hide_st_style = """ <style>                  
                     #MainMenu {visibility: hidden;}
                     footer {visibility: hidden;}
