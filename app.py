@@ -1,15 +1,12 @@
-import streamlit_authenticator as stauth, streamlit as st, calendar, textwrap, plotly.express as px,fitz
-import sys,  pandas as pd, smtplib, ssl,os ,time
+import streamlit_authenticator as stauth, streamlit as st, plotly.express as px
+import sys,  pandas as pd
 from st_aggrid import GridOptionsBuilder, AgGrid
 from streamlit_option_menu import option_menu
-from email.message import EmailMessage
-from fpdf import FPDF
-
 import datetime
 import regex as re
 
 
-# sys.tracebacklimit = 0
+sys.tracebacklimit = 0
 
 def convert_df(x):
    return x.to_csv(index=False).encode('utf-8')
