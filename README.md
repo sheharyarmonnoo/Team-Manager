@@ -1,4 +1,4 @@
-# team_manager
+# Team Manager
 
 ## Overview
 
